@@ -11,34 +11,24 @@ pub struct OllamaBackend {
 }
 
 #[derive(Serialize)]
-struct ChatMessage<'a> {
-    role: &'a str,
-    content: &'a str,
-}
-
-#[derive(Serialize)]
-struct ChatRequest<'a> {
+struct GenerateRequest<'a> {
     model: &'a str,
-    messages: Vec<ChatMessage<'a>>,
+    system: &'a str,
+    prompt: &'a str,
     stream: bool,
-    options: ChatOptions,
+    options: GenerateOptions,
 }
 
 #[derive(Serialize)]
-struct ChatOptions {
+struct GenerateOptions {
     temperature: f32,
     top_p: f32,
 }
 
 #[derive(Deserialize)]
-struct ChatResponse {
-    message: Option<ResponseMessage>,
+struct GenerateResponse {
+    response: Option<String>,
     error: Option<String>,
-}
-
-#[derive(Deserialize)]
-struct ResponseMessage {
-    content: String,
 }
 
 impl OllamaBackend {
@@ -58,7 +48,7 @@ impl OllamaBackend {
 
 impl GemmaBackend for OllamaBackend {
     fn name(&self) -> &str {
-        "Ollama (Local Gemma)"
+        "Ollama (Local LLM)"
     }
 
     fn check_health(&self) -> Result<bool> {
@@ -68,22 +58,14 @@ impl GemmaBackend for OllamaBackend {
     }
 
     fn translate(&self, prompt: &str, system_prompt: &str) -> Result<String> {
-        let url = format!("{}/api/chat", self.endpoint);
+        let url = format!("{}/api/generate", self.endpoint);
 
-        let req = ChatRequest {
+        let req = GenerateRequest {
             model: &self.model,
-            messages: vec![
-                ChatMessage {
-                    role: "system",
-                    content: system_prompt,
-                },
-                ChatMessage {
-                    role: "user",
-                    content: prompt,
-                },
-            ],
+            system: system_prompt,
+            prompt,
             stream: false,
-            options: ChatOptions {
+            options: GenerateOptions {
                 temperature: 0.1,
                 top_p: 0.9,
             },
@@ -102,15 +84,14 @@ impl GemmaBackend for OllamaBackend {
             return Err(anyhow!("Ollama API error {}: {}", status, body));
         }
 
-        let chat_res: ChatResponse = response.json().context("Failed to parse Ollama response")?;
+        let gen_res: GenerateResponse = response.json().context("Failed to parse Ollama response")?;
 
-        if let Some(err) = chat_res.error {
+        if let Some(err) = gen_res.error {
             return Err(anyhow!("Ollama returned error: {}", err));
         }
 
-        chat_res
-            .message
-            .map(|m| m.content)
+        gen_res
+            .response
             .ok_or_else(|| anyhow!("Ollama response was empty"))
     }
 }

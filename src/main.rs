@@ -16,9 +16,9 @@ use std::path::PathBuf;
     name = "ailang",
     author = "AIlang Contributors",
     version = "0.1.0",
-    about = "An interpreted language powered by Google Gemma that converts instructions to Rust and runs them JIT",
+    about = "An interpreted language powered by LLMs (Qwen2.5-Coder / Gemma) that converts instructions to Rust and runs them JIT",
     long_about = "AILang lets you write programs and instructions in natural language or DSL,\n\
-                  uses Google Gemma to translate them into safe, high-performance Rust,\n\
+                  uses local or cloud LLMs (Qwen2.5-Coder / Gemma) to translate them into safe, high-performance Rust,\n\
                   and compiles and executes them on the fly with automatic self-repair."
 )]
 struct Cli {
@@ -29,7 +29,7 @@ struct Cli {
     #[arg(short, long, global = true)]
     backend: Option<String>,
 
-    /// Gemma model identifier (e.g. gemma2, gemma-2-27b-it, gemma-2-9b-it)
+    /// Model identifier (e.g. qwen2.5-coder:0.5b, gemma2, gemma-2-27b-it)
     #[arg(short, long, global = true)]
     model: Option<String>,
 

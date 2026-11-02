@@ -61,18 +61,16 @@ impl Interpreter {
         self.context = SessionContext::default();
     }
 
-    /// Build system prompt guiding Gemma to produce optimal Rust code
+    /// Build system prompt guiding the LLM to produce optimal Rust code
     fn build_system_prompt(&self) -> String {
         let mut prompt = String::from(
-            r#"You are the code generator for AILang, an interpreted language where instructions are converted directly into safe, idiomatic, executable Rust.
-
+            r#"You are an expert Rust programmer. Convert the user instruction into a complete, runnable, and correct Rust program with `fn main()`.
 Rules:
-1. Output ONLY valid Rust code inside a ```rust ... ``` code block.
-2. Do not write explanations, markdown comments, or apologies outside the ```rust ... ``` block.
-3. Produce a complete runnable Rust program containing `fn main()` that fulfills the instruction.
-4. Ensure all necessary std imports, error handling (e.g. unwrap() or ? where appropriate), and println! outputs are included.
-5. If the user instruction is a calculation or query, print the result clearly to stdout.
-6. The Rust code will be compiled with `rustc --edition 2024` and executed immediately.
+1. Output ONLY valid Rust code inside a ```rust ... ``` block. No conversational text.
+2. Always specify explicit types for numbers and variables (e.g. `1i32..=5i32`, `let x: u64 = ...`) to prevent type inference ambiguity.
+3. Idioms: for string reversal use `s.chars().rev().collect::<String>()`; for prime checking write a helper function `fn is_prime(n: u64) -> bool`.
+4. Make sure all results are printed to stdout via println!.
+5. The code will be compiled with `rustc --edition 2024` and executed immediately.
 "#,
         );
 
@@ -150,14 +148,14 @@ Rules:
                         );
                     }
 
-                    // Build repair prompt for Gemma
+                    // Build repair prompt for LLM
                     let repair_prompt = format!(
-                        "The Rust code you generated failed to compile with `rustc`. Please fix it.\n\n\
-                        Original instruction:\n{}\n\n\
+                        "The Rust code failed to compile with `rustc`:\n\n\
+                        ```\n{}\n```\n\n\
                         Failing Rust code:\n```rust\n{}\n```\n\n\
-                        Compiler error message:\n{}\n\n\
-                        Respond ONLY with the complete corrected Rust code inside a ```rust ... ``` block.",
-                        instruction, rust_code, compiler_stderr
+                        Original instruction: {}\n\n\
+                        Fix the compiler error completely. Output ONLY the fixed working Rust code inside ```rust ... ```.",
+                        compiler_stderr, rust_code, instruction
                     );
 
                     let system_prompt = self.build_system_prompt();

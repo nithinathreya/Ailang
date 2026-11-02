@@ -79,7 +79,7 @@ impl Repl {
         println!("{}", "=========================================================".cyan());
         println!(
             "{}",
-            "  AILang: Google Gemma -> Native Rust Interpreter  ".bright_white().bold()
+            "  AILang: LLM -> Native Rust Dynamic Interpreter  ".bright_white().bold()
         );
         println!("{}", "=========================================================".cyan());
         println!(

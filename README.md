@@ -1,23 +1,24 @@
-# AILang: Google Gemma ➜ Native Rust Dynamic Interpreter
+# AILang: Natural Language ➜ Native Rust Dynamic Interpreter
 
 [![Rust](https://img.shields.io/badge/language-Rust-orange.svg)](https://github.com/rust-lang/rust)
-[![Gemma](https://img.shields.io/badge/LLM-Google_Gemma-blue.svg)](https://github.com/google-deepmind/gemma)
+[![Qwen](https://img.shields.io/badge/LLM-Qwen2.5--Coder-blue.svg)](https://github.com/QwenLM/Qwen2.5-Coder)
+[![Gemma](https://img.shields.io/badge/LLM-Google_Gemma-purple.svg)](https://github.com/google-deepmind/gemma)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-green.svg)](LICENSE)
 
-**AILang** is an interpreted programming language and JIT execution environment where high-level instructions (written in natural language, pseudocode, or domain-specific expressions) are translated by **[Google Gemma](https://github.com/google-deepmind/gemma)** directly into safe, memory-efficient, idiomatic **[Rust](https://github.com/rust-lang/rust)** and executed instantly.
+**AILang** is an interpreted programming language and JIT execution environment where high-level instructions (written in natural language, pseudocode, or domain-specific expressions) are translated by local LLMs (like **Qwen2.5-Coder:0.5b** and **Google Gemma**) directly into safe, memory-efficient, idiomatic **[Rust](https://github.com/rust-lang/rust)** and executed instantly.
 
 ---
 
 ## 🌟 Key Features
 
-- **Gemma-Powered Translation**: Leverages Google Gemma models to translate arbitrary instructions into idiomatic Rust programs.
+- **LLM-Powered Translation**: Leverages code-specialized models like `qwen2.5-coder:0.5b` (~390MB) or Google Gemma models to translate instructions into idiomatic Rust.
 - **On-the-Fly JIT Execution**: Seamlessly compiles generated Rust snippets using `rustc` (`--edition 2024`) with fast execution and outputs results in milliseconds.
-- **Self-Healing / Error Correction**: If `rustc` reports a syntax error, type mismatch, or borrow-checker diagnostic, AILang catches the error and sends it back to Gemma in a feedback loop to automatically repair the code.
-- **Multiple Gemma Backends**:
-  - **Local Ollama** (`gemma2`, `gemma:2b`, `gemma2:9b`, etc.)
+- **Self-Healing / Error Correction**: If `rustc` reports a syntax error, type mismatch, or borrow-checker diagnostic, AILang catches the error and sends it back to the model in a feedback loop to automatically repair the code.
+- **Multiple Backends**:
+  - **Local Ollama** (`qwen2.5-coder:0.5b`, `gemma2`, `gemma:2b`, etc.)
   - **Google AI Studio API** (Gemma & Gemini API via `GEMMA_API_KEY` or `GEMINI_API_KEY`)
   - **OpenAI-Compatible** (vLLM, `llama-server`, LM Studio, Groq)
-  - **Local CLI Command** (`gemma.cpp`, `llama-cli`)
+  - **Local CLI Command** (`llama-cli`, `gemma.cpp`)
   - **Built-in Offline Synthesizer** (Works out of the box with zero external dependencies)
 - **Interactive REPL**: A full-featured terminal REPL powered by `rustyline` with persistent history, state tracking, and introspection.
 - **Transpiler Mode**: Export generated Rust code to standalone `.rs` files that can be built into standalone production binaries.
@@ -236,11 +237,11 @@ AILang supports multiple backends configured via CLI flags or environment variab
 
 | Backend | Flag / Environment Variable | Default Model | Notes |
 | :--- | :--- | :--- | :--- |
-| **Ollama** (Local) | `--backend ollama`<br>`GEMMA_BACKEND=ollama`<br>`OLLAMA_HOST=http://localhost:11434` | `gemma2` | Fast, private local inference. Run `ollama run gemma2` |
+| **Ollama** (Local) | `--backend ollama`<br>`OLLAMA_MODEL=qwen2.5-coder:0.5b`<br>`OLLAMA_HOST=http://localhost:11434` | `qwen2.5-coder:0.5b` | Ultra-fast local coding model (~390MB) or Gemma |
 | **Google AI Studio** | `--backend google`<br>`GEMMA_API_KEY=your_key` or `GEMINI_API_KEY=...` | `gemma-2-27b-it` | High-quality cloud Gemma model |
 | **OpenAI-Compatible** | `--backend openai`<br>`OPENAI_BASE_URL=...`<br>`OPENAI_API_KEY=...` | `gemma-2-9b-it` | Compatible with vLLM, llama.cpp, LocalAI, Groq |
 | **Local Command** | `--backend cmd`<br>`GEMMA_CMD="gemma --prompt"` | `gemma` | Uses local CLI binaries |
-| **Offline Synthesizer**| `--backend mock` | `gemma-mock` | Deterministic offline patterns (always ready) |
+| **Offline Synthesizer**| `--backend mock` | `mock` | Deterministic offline patterns (always ready) |
 
 ---
 
