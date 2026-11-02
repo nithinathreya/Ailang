@@ -1,0 +1,16 @@
+[package]
+name = "ailang"
+version = "0.1.0"
+edition = "2024"
+authors = ["AIlang Contributors"]
+description = "An interpreted language powered by Google Gemma that converts instructions to Rust and executes them JIT"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+reqwest = { version = "0.12", features = ["json", "blocking"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+colored = "2.1"
+rustyline = "14.0"
+tempfile = "3.10"
+anyhow = "1.0"
