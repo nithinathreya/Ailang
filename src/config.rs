@@ -36,6 +36,12 @@ impl Default for Config {
     fn default() -> Self {
         let (backend, model, api_key, endpoint) = Self::detect_environment();
 
+        let timeout_secs = std::env::var("AILANG_TIMEOUT")
+            .or_else(|_| std::env::var("OLLAMA_TIMEOUT"))
+            .ok()
+            .and_then(|t| t.parse::<u64>().ok())
+            .unwrap_or(90);
+
         Self {
             backend,
             model,
@@ -43,7 +49,7 @@ impl Default for Config {
             endpoint,
             command: std::env::var("GEMMA_CMD").ok(),
             max_retries: 3,
-            timeout_secs: 30,
+            timeout_secs,
             verbose: false,
             show_rust: false,
             keep_temp: false,

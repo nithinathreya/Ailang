@@ -7,6 +7,7 @@ use std::time::Duration;
 pub struct OllamaBackend {
     endpoint: String,
     model: String,
+    timeout_secs: u64,
     client: Client,
 }
 
@@ -41,6 +42,7 @@ impl OllamaBackend {
         Self {
             endpoint: endpoint.trim_end_matches('/').to_string(),
             model: model.to_string(),
+            timeout_secs,
             client,
         }
     }
@@ -109,6 +111,12 @@ impl GemmaBackend for OllamaBackend {
                         .ok_or_else(|| anyhow!("Ollama response was empty"));
                 }
                 Err(e) => {
+                    if e.is_timeout() {
+                        return Err(anyhow!(
+                            "Ollama request timed out after {}s while generating response. If your system or model needs more time, set AILANG_TIMEOUT=120 or use --timeout.",
+                            self.timeout_secs
+                        ));
+                    }
                     last_err = Some(e);
                 }
             }

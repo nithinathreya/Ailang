@@ -41,6 +41,10 @@ struct Cli {
     #[arg(long, global = true)]
     endpoint: Option<String>,
 
+    /// Timeout in seconds for LLM generation
+    #[arg(long, global = true)]
+    timeout: Option<u64>,
+
     /// Print generated Rust code before running
     #[arg(long, global = true)]
     show_rust: bool,
@@ -118,6 +122,10 @@ fn apply_cli_overrides(mut config: Config, cli: &Cli) -> Config {
 
     if let Some(ref ep) = cli.endpoint {
         config.endpoint = Some(ep.clone());
+    }
+
+    if let Some(t) = cli.timeout {
+        config.timeout_secs = t;
     }
 
     if cli.show_rust {

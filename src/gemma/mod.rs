@@ -38,14 +38,19 @@ pub fn create_backend(config: &Config) -> Box<dyn GemmaBackend> {
         )),
         BackendKind::Mock => Box::new(mock::MockBackend::new()),
         BackendKind::Auto => {
-            // Check if Ollama is accessible
-            let ollama = ollama::OllamaBackend::new(
+            // Check if Ollama is accessible using a quick health probe
+            let probe = ollama::OllamaBackend::new(
                 config.endpoint.as_deref().unwrap_or("http://127.0.0.1:11434"),
                 &config.model,
-                2, // short timeout for probe
+                3, // probe timeout
             );
-            if ollama.check_health().unwrap_or(false) {
-                return Box::new(ollama);
+            if probe.check_health().unwrap_or(false) {
+                // Return instance with the full generation timeout (e.g. 90s)
+                return Box::new(ollama::OllamaBackend::new(
+                    config.endpoint.as_deref().unwrap_or("http://127.0.0.1:11434"),
+                    &config.model,
+                    config.timeout_secs,
+                ));
             }
 
             // Check if Google API key is set
