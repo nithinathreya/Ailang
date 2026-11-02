@@ -18,7 +18,7 @@ pub trait GemmaBackend: Send + Sync {
 pub fn create_backend(config: &Config) -> Box<dyn GemmaBackend> {
     match config.backend {
         BackendKind::Ollama => Box::new(ollama::OllamaBackend::new(
-            config.endpoint.as_deref().unwrap_or("http://localhost:11434"),
+            config.endpoint.as_deref().unwrap_or("http://127.0.0.1:11434"),
             &config.model,
             config.timeout_secs,
         )),
@@ -40,7 +40,7 @@ pub fn create_backend(config: &Config) -> Box<dyn GemmaBackend> {
         BackendKind::Auto => {
             // Check if Ollama is accessible
             let ollama = ollama::OllamaBackend::new(
-                config.endpoint.as_deref().unwrap_or("http://localhost:11434"),
+                config.endpoint.as_deref().unwrap_or("http://127.0.0.1:11434"),
                 &config.model,
                 2, // short timeout for probe
             );

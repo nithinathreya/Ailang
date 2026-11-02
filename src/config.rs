@@ -56,7 +56,7 @@ impl Config {
         if let Ok(backend_str) = std::env::var("GEMMA_BACKEND") {
             match backend_str.to_lowercase().as_str() {
                 "ollama" => {
-                    let ep = std::env::var("OLLAMA_HOST").unwrap_or_else(|_| "http://localhost:11434".to_string());
+                    let ep = std::env::var("OLLAMA_HOST").unwrap_or_else(|_| "http://127.0.0.1:11434".to_string());
                     let model = std::env::var("OLLAMA_MODEL")
                         .or_else(|_| std::env::var("GEMMA_MODEL"))
                         .unwrap_or_else(|_| "qwen2.5-coder:0.5b".to_string());
@@ -103,7 +103,7 @@ impl Config {
         let model = std::env::var("OLLAMA_MODEL")
             .or_else(|_| std::env::var("GEMMA_MODEL"))
             .unwrap_or_else(|_| "qwen2.5-coder:0.5b".to_string());
-        (BackendKind::Auto, model, None, Some("http://localhost:11434".to_string()))
+        (BackendKind::Auto, model, None, Some("http://127.0.0.1:11434".to_string()))
     }
 
     pub fn config_file_path() -> Option<PathBuf> {
