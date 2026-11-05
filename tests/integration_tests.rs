@@ -9,7 +9,7 @@ fn test_cli_help() {
 
     assert!(output.status.success());
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("AILang lets you write programs"));
+    assert!(stdout.contains("Ailang lets you write programs"));
     assert!(stdout.contains("repl"));
     assert!(stdout.contains("run"));
     assert!(stdout.contains("eval"));
@@ -38,7 +38,7 @@ fn test_eval_hello_world() {
 
     assert!(output.status.success());
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("Hello, World from AILang & Rust!"));
+    assert!(stdout.contains("Hello, World from Ailang & Rust!"));
 }
 
 #[test]

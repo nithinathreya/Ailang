@@ -22,7 +22,7 @@ impl GemmaBackend for MockBackend {
         if p_lower.contains("hello world") || p_lower == "hello" || p_lower == "hi" {
             return Ok(r#"```rust
 fn main() {
-    println!("Hello, World from AILang & Rust!");
+    println!("Hello, World from Ailang & Rust!");
 }
 ```"#.to_string());
         }
@@ -305,10 +305,10 @@ fn handle_client(mut stream: TcpStream) -> bool {{
             ("200 OK", "application/json", "{{\"status\":\"ok\",\"server\":\"ailang\"}}\n")
         }}
         "/hello" => {{
-            ("200 OK", "text/plain", "Hello, World from AILang HTTP Server!\n")
+            ("200 OK", "text/plain", "Hello, World from Ailang HTTP Server!\n")
         }}
         _ => {{
-            ("200 OK", "text/html; charset=utf-8", "<h1>Welcome to AILang HTTP Server!</h1>\n<p>Running natively compiled Rust code.</p>\n")
+            ("200 OK", "text/html; charset=utf-8", "<h1>Welcome to Ailang HTTP Server!</h1>\n<p>Running natively compiled Rust code.</p>\n")
         }}
     }};
 
@@ -375,9 +375,9 @@ fn main() {{
         let escaped_prompt = p.replace('\\', "\\\\").replace('"', "\\\"");
         Ok(format!(
             r#"```rust
-// AILang offline mode generated program
+// Ailang offline mode generated program
 fn main() {{
-    println!(">>> Running AILang instruction: \"{}\"", "{}");
+    println!(">>> Running Ailang instruction: \"{}\"", "{}");
     println!("---");
     println!("Code synthesized and executed in safe native Rust.");
     println!("Tip: Set GEMMA_BACKEND=ollama or GEMMA_API_KEY for dynamic arbitrary LLM translations!");

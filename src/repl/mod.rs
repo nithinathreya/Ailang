@@ -79,7 +79,7 @@ impl Repl {
         println!("{}", "=========================================================".cyan());
         println!(
             "{}",
-            "  AILang: LLM -> Native Rust Dynamic Interpreter  ".bright_white().bold()
+            "  Ailang: LLM -> Native Rust Dynamic Interpreter  ".bright_white().bold()
         );
         println!("{}", "=========================================================".cyan());
         println!(

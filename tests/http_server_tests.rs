@@ -76,7 +76,7 @@ fn test_http_server_lifecycle() {
     assert_eq!(root_resp.status(), reqwest::StatusCode::OK);
     let root_body = root_resp.text().unwrap();
     assert!(
-        root_body.contains("Welcome to AILang HTTP Server!"),
+        root_body.contains("Welcome to Ailang HTTP Server!"),
         "Unexpected body: {}",
         root_body
     );
@@ -94,7 +94,7 @@ fn test_http_server_lifecycle() {
     let hello_resp = client.get(&hello_url).send().expect("Failed to GET /hello");
     assert_eq!(hello_resp.status(), reqwest::StatusCode::OK);
     let hello_body = hello_resp.text().unwrap();
-    assert!(hello_body.contains("Hello, World from AILang HTTP Server!"));
+    assert!(hello_body.contains("Hello, World from Ailang HTTP Server!"));
 
     // 4. Test GET /shutdown (Clean graceful termination)
     let shutdown_url = format!("http://127.0.0.1:{}/shutdown", port);

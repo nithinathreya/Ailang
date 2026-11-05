@@ -88,7 +88,7 @@ impl Interpreter {
         parser.parse()
     }
 
-    /// Check if input is valid native AILang syntax
+    /// Check if input is valid native Ailang syntax
     pub fn try_parse_native(input: &str) -> Option<Vec<ast::Stmt>> {
         let trimmed = input.trim();
         if trimmed.is_empty() {
@@ -127,7 +127,7 @@ impl Interpreter {
         }
     }
 
-    /// Execute native AILang AST statements
+    /// Execute native Ailang AST statements
     pub fn execute_native(&mut self, mut stmts: Vec<ast::Stmt>) -> Result<ExecutionResult> {
         let start = Instant::now();
 
@@ -166,7 +166,7 @@ impl Interpreter {
             exit_code: Some(0),
             compile_duration_ms: 0,
             run_duration_ms: run_duration,
-            rust_source: "// Executed via native AILang AST tree-walker\n".to_string(),
+            rust_source: "// Executed via native Ailang AST tree-walker\n".to_string(),
             binary_path: None,
         })
     }
@@ -282,7 +282,7 @@ Rules:
         // 1. Try native AST execution first
         if let Some(stmts) = Self::try_parse_native(trimmed) {
             if self.config.verbose {
-                println!("{}", "[Executing via Native AILang Interpreter]".green().bold());
+                println!("{}", "[Executing via Native Ailang Interpreter]".green().bold());
             }
             return self.execute_native(stmts);
         }
@@ -310,7 +310,7 @@ Rules:
         Ok(exec_result)
     }
 
-    /// Execute an entire script file written in AILang
+    /// Execute an entire script file written in Ailang
     pub fn execute_file(&mut self, path: &Path, args: &[String]) -> Result<ExecutionResult> {
         let script_content = std::fs::read_to_string(path)
             .with_context(|| format!("Failed to read script file: {}", path.display()))?;

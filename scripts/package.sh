@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# AILang Package Script: Builds distributable tarball and self-extracting installer
+# Ailang Package Script: Builds distributable tarball and self-extracting installer
 # ==============================================================================
 
 set -e
@@ -13,7 +13,7 @@ OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 ARCH="$(uname -m)"
 TARBALL_NAME="ailang-v${VERSION}-${OS}-${ARCH}.tar.gz"
 
-echo "=== Building AILang Release Package ==="
+echo "=== Building Ailang Release Package ==="
 
 # 1. Compile Release Binary
 echo "Building release binary with cargo..."
@@ -42,7 +42,7 @@ echo "Creating self-extracting installer: $SELF_EXTRACTOR..."
 cat << 'EOF' > "$SELF_EXTRACTOR"
 #!/usr/bin/env bash
 # ==============================================================================
-# AILang Self-Extracting Single Installer
+# Ailang Self-Extracting Single Installer
 # ==============================================================================
 set -e
 
@@ -52,7 +52,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-echo "Extracting AILang installation bundle..."
+echo "Extracting Ailang installation bundle..."
 # Find the line number where the payload starts
 ARCHIVE_LINE=$(awk '/^__PAYLOAD_BELOW__/ {print NR + 1; exit 0; }' "$0")
 

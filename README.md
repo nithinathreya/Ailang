@@ -1,11 +1,11 @@
-# AILang: Natural Language ➜ Native Rust Dynamic Interpreter
+# Ailang: Natural Language ➜ Native Rust Dynamic Interpreter
 
 [![Rust](https://img.shields.io/badge/language-Rust-orange.svg)](https://github.com/rust-lang/rust)
 [![Qwen](https://img.shields.io/badge/LLM-Qwen2.5--Coder-blue.svg)](https://github.com/QwenLM/Qwen2.5-Coder)
 [![Gemma](https://img.shields.io/badge/LLM-Google_Gemma-purple.svg)](https://github.com/google-deepmind/gemma)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-**AILang** is an interpreted programming language and JIT execution environment where high-level instructions (written in natural language, pseudocode, or domain-specific expressions) are translated by local LLMs (like **Qwen2.5-Coder:0.5b** and **Google Gemma**) directly into safe, memory-efficient, idiomatic **[Rust](https://github.com/rust-lang/rust)** and executed instantly.
+**Ailang** is an interpreted programming language and JIT execution environment where high-level instructions (written in natural language, pseudocode, or domain-specific expressions) are translated by local LLMs (like **Qwen2.5-Coder:0.5b** and **Google Gemma**) directly into safe, memory-efficient, idiomatic **[Rust](https://github.com/rust-lang/rust)** and executed instantly.
 
 ---
 
@@ -13,7 +13,7 @@
 
 - **Dual-Mode Interpreter**: Features both a complete **native AST interpreter engine** (Lexer, Recursive-Descent Parser, Semantic Analyzer with Constant Folding, Environment & Scoping, Built-in Library) and an **LLM-Powered JIT compiler** (Google Gemma / Qwen2.5-Coder into native Rust).
 - **On-the-Fly JIT Execution**: Seamlessly compiles generated Rust snippets using `rustc` (`--edition 2024`) with fast execution and outputs results in milliseconds.
-- **Self-Healing / Error Correction**: If `rustc` reports a syntax error, type mismatch, or borrow-checker diagnostic, AILang catches the error and sends it back to the model in a feedback loop to automatically repair the code.
+- **Self-Healing / Error Correction**: If `rustc` reports a syntax error, type mismatch, or borrow-checker diagnostic, Ailang catches the error and sends it back to the model in a feedback loop to automatically repair the code.
 - **Multiple Backends**:
   - **Local Ollama** (`qwen2.5-coder:0.5b`, `gemma2`, `gemma:2b`, etc.)
   - **Google AI Studio API** (Gemma & Gemini API via `GEMMA_API_KEY` or `GEMINI_API_KEY`)
@@ -29,8 +29,8 @@
 
 ```mermaid
 flowchart TD
-    User(["User (REPL / .ail Script / CLI)"]) --> AILangEngine["AILang Engine"]
-    AILangEngine --> PromptBuilder["Context & Prompt Synthesizer\n(Imports, Types, State)"]
+    User(["User (REPL / .ail Script / CLI)"]) --> AilangEngine["Ailang Engine"]
+    AilangEngine --> PromptBuilder["Context & Prompt Synthesizer\n(Imports, Types, State)"]
     PromptBuilder --> GemmaBackend{"Gemma Backend\n(Ollama / Google AI / OpenAI / Local)"}
     GemmaBackend --> RustExtractor["Rust Code Extractor"]
     RustExtractor --> Rustc["rustc Compiler\n(Native JIT Compilation)"]
@@ -55,8 +55,8 @@ flowchart TD
 Clone the repository and build the release binary:
 
 ```bash
-git clone https://github.com/shashank/AIlang.git # or your workspace
-cd AIlang
+git clone https://github.com/shashank/Ailang.git # or your workspace
+cd Ailang
 cargo build --release
 ```
 
@@ -81,7 +81,7 @@ ailang
 Example session:
 ```text
 =========================================================
-  AILang: Google Gemma -> Native Rust Interpreter  
+  Ailang: Google Gemma -> Native Rust Interpreter  
 =========================================================
 Backend: Ollama (Local Gemma)
 Model:   gemma2
@@ -236,7 +236,7 @@ ailang check
 
 ## ⚙️ Configuration & Backend Setup
 
-AILang supports multiple backends configured via CLI flags or environment variables:
+Ailang supports multiple backends configured via CLI flags or environment variables:
 
 | Backend | Flag / Environment Variable | Default Model | Notes |
 | :--- | :--- | :--- | :--- |
@@ -250,7 +250,7 @@ AILang supports multiple backends configured via CLI flags or environment variab
 
 ## 🧪 Testing
 
-AILang comes with a full test suite testing unit logic, compilation pipelines, error handling, and CLI integration:
+Ailang comes with a full test suite testing unit logic, compilation pipelines, error handling, and CLI integration:
 
 ```bash
 cargo test

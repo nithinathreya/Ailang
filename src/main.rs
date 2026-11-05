@@ -14,10 +14,10 @@ use std::path::PathBuf;
 #[derive(Parser, Debug)]
 #[command(
     name = "ailang",
-    author = "AIlang Contributors",
+    author = "Ailang Contributors",
     version = "0.1.0",
     about = "An interpreted language powered by LLMs (Qwen2.5-Coder / Gemma) that converts instructions to Rust and runs them JIT",
-    long_about = "AILang lets you write programs and instructions in natural language or DSL,\n\
+    long_about = "Ailang lets you write programs and instructions in natural language or DSL,\n\
                   uses local or cloud LLMs (Qwen2.5-Coder / Gemma) to translate them into safe, high-performance Rust,\n\
                   and compiles and executes them on the fly with automatic self-repair."
 )]
@@ -60,10 +60,10 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
-    /// Start interactive AILang REPL (default)
+    /// Start interactive Ailang REPL (default)
     Repl,
 
-    /// Run an AILang script file (.ail)
+    /// Run an Ailang script file (.ail)
     Run {
         /// Path to the .ail script file
         file: PathBuf,
@@ -83,7 +83,7 @@ enum Commands {
         args: Vec<String>,
     },
 
-    /// Transpile AILang instruction or script into a standalone Rust file
+    /// Transpile Ailang instruction or script into a standalone Rust file
     Transpile {
         /// Input script file or instruction
         input: String,
@@ -96,7 +96,7 @@ enum Commands {
     /// Verify environment: checks rustc and Gemma backend connectivity
     Check,
 
-    /// View or inspect current AILang configuration
+    /// View or inspect current Ailang configuration
     Config,
 }
 
@@ -211,7 +211,7 @@ fn main() -> anyhow::Result<()> {
             println!("{} Standalone Rust code written to {}", "✓".green().bold(), output.display());
         }
         Commands::Check => {
-            println!("{}", "=== AILang Environment Diagnostics ===".cyan().bold());
+            println!("{}", "=== Ailang Environment Diagnostics ===".cyan().bold());
 
             // 1. Check rustc
             match compiler::RustRunner::check_rustc() {
@@ -231,7 +231,7 @@ fn main() -> anyhow::Result<()> {
             }
         }
         Commands::Config => {
-            println!("{}", "=== Current AILang Configuration ===".cyan().bold());
+            println!("{}", "=== Current Ailang Configuration ===".cyan().bold());
             println!("{}", serde_json::to_string_pretty(&config)?);
             if let Some(path) = Config::config_file_path() {
                 println!("\nConfig path: {}", path.display());

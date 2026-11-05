@@ -1,4 +1,4 @@
-// AILang Native Interpreter Demonstration
+// Ailang Native Interpreter Demonstration
 // Based on "Building an Interpreter from Scratch" (SourceBae Tutorial)
 
 fn factorial(n) {

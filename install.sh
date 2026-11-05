@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# AILang: Google Gemma & Qwen -> Native Rust Interpreter Installer
+# Ailang: Google Gemma & Qwen -> Native Rust Interpreter Installer
 # ==============================================================================
 # Usage:
 #   ./install.sh                Interactive installation
 #   ./install.sh -y             Non-interactive installation (defaults)
 #   ./install.sh --prefix /dir  Install binary to /dir (default: /usr/local/bin)
-#   ./install.sh --uninstall    Uninstall AILang from system
+#   ./install.sh --uninstall    Uninstall Ailang from system
 # ==============================================================================
 
 set -e
@@ -66,13 +66,13 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -h|--help)
-            echo "AILang Installer"
+            echo "Ailang Installer"
             echo "Options:"
             echo "  -y, --yes          Skip prompts and accept defaults"
             echo "  --prefix <path>    Specify destination directory for ailang binary"
             echo "  --model <name>     Specify model to pull (default: qwen2.5-coder:0.5b)"
             echo "  --skip-ollama      Do not install or configure Ollama"
-            echo "  --uninstall        Remove AILang binary and configuration"
+            echo "  --uninstall        Remove Ailang binary and configuration"
             echo "  -h, --help         Show this message"
             exit 0
             ;;
@@ -89,7 +89,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Handle Uninstallation
 # ------------------------------------------------------------------------------
 if [ "$UNINSTALL" = true ]; then
-    info "Uninstalling AILang..."
+    info "Uninstalling Ailang..."
 
     # Look for binary in common locations
     REMOVED=0
@@ -111,9 +111,9 @@ if [ "$UNINSTALL" = true ]; then
     fi
 
     if [ "$REMOVED" -eq 1 ]; then
-        success "AILang has been successfully uninstalled."
+        success "Ailang has been successfully uninstalled."
     else
-        warn "No AILang installation was found."
+        warn "No Ailang installation was found."
     fi
     exit 0
 fi
@@ -176,7 +176,7 @@ if ! command -v rustc &> /dev/null || ! command -v cargo &> /dev/null; then
             curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
             source "$HOME/.cargo/env"
         else
-            error "Rust is required to run AILang. Please install Rust from https://rustup.rs/"
+            error "Rust is required to run Ailang. Please install Rust from https://rustup.rs/"
             exit 1
         fi
     fi
@@ -196,7 +196,7 @@ if [ -f "$SCRIPT_DIR/target/release/ailang" ]; then
 elif [ -f "$SCRIPT_DIR/bin/ailang" ]; then
     BIN_SRC="$SCRIPT_DIR/bin/ailang"
 elif [ -f "$SCRIPT_DIR/Cargo.toml" ]; then
-    info "Compiling AILang release binary with cargo..."
+    info "Compiling Ailang release binary with cargo..."
     (cd "$SCRIPT_DIR" && cargo build --release)
     BIN_SRC="$SCRIPT_DIR/target/release/ailang"
 else
@@ -337,7 +337,7 @@ info "Running self-test diagnostics..."
 "$INSTALL_PREFIX/ailang" check || true
 
 printf "\n${GREEN}${BOLD}========================================================================${RESET}\n"
-printf "${GREEN}${BOLD}  ✓ AILang Installation Complete!${RESET}\n"
+printf "${GREEN}${BOLD}  ✓ Ailang Installation Complete!${RESET}\n"
 printf "${GREEN}${BOLD}========================================================================${RESET}\n\n"
 
 echo "Try running:"

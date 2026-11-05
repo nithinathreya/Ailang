@@ -2,7 +2,7 @@
 name = "ailang"
 version = "0.1.0"
 edition = "2024"
-authors = ["AIlang Contributors"]
+authors = ["Ailang Contributors"]
 license = "MIT"
 description = "An interpreted language powered by Google Gemma that converts instructions to Rust and executes them JIT"
 
