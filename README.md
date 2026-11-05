@@ -3,7 +3,7 @@
 [![Rust](https://img.shields.io/badge/language-Rust-orange.svg)](https://github.com/rust-lang/rust)
 [![Qwen](https://img.shields.io/badge/LLM-Qwen2.5--Coder-blue.svg)](https://github.com/QwenLM/Qwen2.5-Coder)
 [![Gemma](https://img.shields.io/badge/LLM-Google_Gemma-purple.svg)](https://github.com/google-deepmind/gemma)
-[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 **AILang** is an interpreted programming language and JIT execution environment where high-level instructions (written in natural language, pseudocode, or domain-specific expressions) are translated by local LLMs (like **Qwen2.5-Coder:0.5b** and **Google Gemma**) directly into safe, memory-efficient, idiomatic **[Rust](https://github.com/rust-lang/rust)** and executed instantly.
 
@@ -11,7 +11,7 @@
 
 ## 🌟 Key Features
 
-- **LLM-Powered Translation**: Leverages code-specialized models like `qwen2.5-coder:0.5b` (~390MB) or Google Gemma models to translate instructions into idiomatic Rust.
+- **Dual-Mode Interpreter**: Features both a complete **native AST interpreter engine** (Lexer, Recursive-Descent Parser, Semantic Analyzer with Constant Folding, Environment & Scoping, Built-in Library) and an **LLM-Powered JIT compiler** (Google Gemma / Qwen2.5-Coder into native Rust).
 - **On-the-Fly JIT Execution**: Seamlessly compiles generated Rust snippets using `rustc` (`--edition 2024`) with fast execution and outputs results in milliseconds.
 - **Self-Healing / Error Correction**: If `rustc` reports a syntax error, type mismatch, or borrow-checker diagnostic, AILang catches the error and sends it back to the model in a feedback loop to automatically repair the code.
 - **Multiple Backends**:
@@ -116,6 +116,9 @@ Goodbye!
 #### REPL Commands:
 - `:help` - Display available commands.
 - `:state` - View active session definitions and execution history.
+- `:vars` - View variables and functions in the native environment.
+- `:tokens <code>` - Inspect Lexer tokens for code.
+- `:ast <code>` - Inspect the Abstract Syntax Tree (AST) for code.
 - `:rust` - Toggle printing the generated Rust code.
 - `:verbose` - Toggle execution and compilation timing metrics.
 - `:reset` - Reset session scope and definitions.
@@ -255,11 +258,17 @@ cargo test
 
 Result:
 ```text
-running 5 tests (unit tests)
+running 10 tests (unit tests in lib & main)
+test result: ok. 10 passed; 0 failed
+
+running 9 tests (native interpreter: lexer, parser, ast, semantic, evaluator)
+test result: ok. 9 passed; 0 failed
+
+running 5 tests (http server integration tests)
 test result: ok. 5 passed; 0 failed
 
-running 8 tests (integration tests)
-test result: ok. 8 passed; 0 failed
+running 10 tests (cli integration tests)
+test result: ok. 10 passed; 0 failed
 ```
 
 ---
@@ -268,3 +277,10 @@ test result: ok. 8 passed; 0 failed
 
 - **Google Gemma**: [https://github.com/google-deepmind/gemma](https://github.com/google-deepmind/gemma)
 - **Rust Programming Language**: [https://github.com/rust-lang/rust](https://github.com/rust-lang/rust)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+

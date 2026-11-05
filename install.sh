@@ -212,13 +212,23 @@ info "Installing ailang binary to $INSTALL_PREFIX/ailang..."
 mkdir -p "$INSTALL_PREFIX" 2>/dev/null || true
 
 if [ -w "$INSTALL_PREFIX" ]; then
+    rm -f "$INSTALL_PREFIX/ailang"
     cp "$BIN_SRC" "$INSTALL_PREFIX/ailang"
     chmod +x "$INSTALL_PREFIX/ailang"
+    if [ "$OS" = "Darwin" ]; then
+        xattr -cr "$INSTALL_PREFIX/ailang" 2>/dev/null || true
+        codesign --force --sign - "$INSTALL_PREFIX/ailang" 2>/dev/null || true
+    fi
 else
     warn "Elevated privileges required to write to $INSTALL_PREFIX. Running with sudo..."
     sudo mkdir -p "$INSTALL_PREFIX"
+    sudo rm -f "$INSTALL_PREFIX/ailang"
     sudo cp "$BIN_SRC" "$INSTALL_PREFIX/ailang"
     sudo chmod +x "$INSTALL_PREFIX/ailang"
+    if [ "$OS" = "Darwin" ]; then
+        sudo xattr -cr "$INSTALL_PREFIX/ailang" 2>/dev/null || true
+        sudo codesign --force --sign - "$INSTALL_PREFIX/ailang" 2>/dev/null || true
+    fi
 fi
 
 success "Installed $INSTALL_PREFIX/ailang"

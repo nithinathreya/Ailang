@@ -1,0 +1,2 @@
+// Simple HTTP Server in AILang
+create a http server on port 8080 that handles GET requests and shuts down on /shutdown

@@ -113,6 +113,9 @@ impl Repl {
                 println!("{}", "REPL Commands:".bold().underline());
                 println!("  {}         - Display this help message", ":help".cyan());
                 println!("  {}         - View session history, variables, and definitions", ":state".cyan());
+                println!("  {}          - View native environment variables", ":vars".cyan());
+                println!("  {} <code>   - Inspect Lexer tokens for code", ":tokens".cyan());
+                println!("  {} <code>      - Inspect Abstract Syntax Tree (AST) for code", ":ast".cyan());
                 println!("  {}          - Toggle showing generated Rust source code", ":rust".cyan());
                 println!("  {}       - Toggle verbose timing and compilation info", ":verbose".cyan());
                 println!("  {}         - Clear session context and definitions", ":reset".cyan());
@@ -148,6 +151,49 @@ impl Repl {
             }
             ":clear" => {
                 print!("\x1B[2J\x1B[1;1H");
+            }
+            ":vars" => {
+                println!("{}", "=== Native Environment Variables ===".cyan().bold());
+                let vars = self.interpreter.evaluator.env.borrow().all_variables();
+                if vars.is_empty() {
+                    println!("No user-defined variables.");
+                } else {
+                    for (k, v) in vars {
+                        println!("  {} = {}", k.bold(), v);
+                    }
+                }
+            }
+            ":tokens" => {
+                let code = cmd.strip_prefix(":tokens").unwrap_or("").trim();
+                if code.is_empty() {
+                    println!("{}", "Usage: :tokens <code snippet>".yellow());
+                } else {
+                    match self.interpreter.tokenize(code) {
+                        Ok(tokens) => {
+                            println!("{}", "=== Lexer Tokens ===".cyan().bold());
+                            for tok in tokens {
+                                println!("  [{}] {:?} ({:?})", tok.span, tok.token_type, tok.lexeme);
+                            }
+                        }
+                        Err(e) => println!("{}: {}", "Lexer Error".red(), e),
+                    }
+                }
+            }
+            ":ast" => {
+                let code = cmd.strip_prefix(":ast").unwrap_or("").trim();
+                if code.is_empty() {
+                    println!("{}", "Usage: :ast <code snippet>".yellow());
+                } else {
+                    match self.interpreter.parse(code) {
+                        Ok(ast) => {
+                            println!("{}", "=== Abstract Syntax Tree (AST) ===".cyan().bold());
+                            for stmt in ast {
+                                println!("  {:#?}", stmt);
+                            }
+                        }
+                        Err(e) => println!("{}: {}", "Parser Error".red(), e),
+                    }
+                }
             }
             ":state" => {
                 println!("{}", "=== Current Session State ===".cyan().bold());

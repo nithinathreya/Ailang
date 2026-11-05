@@ -111,3 +111,32 @@ fn test_transpile_to_file() {
     assert!(content.contains("Fibonacci sequence"));
     let _ = std::fs::remove_file(temp_file);
 }
+
+#[test]
+fn test_eval_native_code() {
+    let output = Command::new(env!("CARGO_BIN_EXE_ailang"))
+        .args(["eval", "let x = 15; let y = 27; print x + y;"])
+        .output()
+        .expect("Failed to evaluate native code");
+
+    assert!(output.status.success());
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    assert_eq!(stdout.trim(), "42");
+}
+
+#[test]
+fn test_run_native_script_file() {
+    let output = Command::new(env!("CARGO_BIN_EXE_ailang"))
+        .args(["run", "examples/interpreter_demo.ail"])
+        .output()
+        .expect("Failed to run native script file");
+
+    assert!(output.status.success());
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    assert!(stdout.contains("Factorial of 5 is:"));
+    assert!(stdout.contains("120"));
+    assert!(stdout.contains("Array length:"));
+    assert!(stdout.contains("6"));
+    assert!(stdout.contains("10"));
+    assert!(stdout.contains("60"));
+}
