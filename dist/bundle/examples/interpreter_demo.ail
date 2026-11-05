@@ -1,0 +1,22 @@
+// Ailang Native Interpreter Demonstration
+// Based on "Building an Interpreter from Scratch" (SourceBae Tutorial)
+
+fn factorial(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+let x = 5;
+let fact5 = factorial(x);
+print "Factorial of 5 is:";
+print fact5;
+
+let numbers = [10, 20, 30, 40, 50];
+push(numbers, 60);
+print "Array length:";
+print len(numbers);
+print "First and last elements:";
+print numbers[0];
+print numbers[-1];
